@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>IdleHands</title>
+  <link rel="stylesheet" type="text/css" href="interface.css">
+  </head>
+
+  <body>
+    <div id="topRow">
+      <div id="topRowRight">
+	<a href="#" onclick="loadStuff()">Load</a>
+	/
+	<a href="#" onclick="saveStuff()">Save</a>
+      </div>
+    </div>
+    <h1>IdleHands</h1>
+    <h3>Hands: <span id="hands"></span></h3>
+    <button class="button1" onClick="handClick(1)">MORE</button>
+
+    <h3>Arms: <span id="arms"></span>  Cost: <span id="armCost"></span></h3>
+    <button class="button2" onClick="buyArm(1)">Buy Arm</button>
+
+    <script type="text/javascript" src="main.js"></script>
+  </body>
+</html>
