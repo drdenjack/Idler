@@ -2,11 +2,11 @@
 var handData = {
     idx: 0,
     label: "Hands",
-    num: 1110,
+    num: 10000,
     id: "hands",
     cost: null,
-    costId: this.id+"Cost",
 };
+handData.costId=handData.id+"Cost";
 
 var armData = {
     idx: 1,
@@ -67,6 +67,22 @@ function buyItem(item){
     };
 
 };
+
+function getRandInt(min,max){
+    return Math.floor(Math.random() * (max-min)) + min;
+}
+
+function getChance(val){
+    // for a 1 in 20 chance, val==20
+    return (getRandInt(0,val) == 0);
+}
+
+function setRandTestVal(){
+
+    var randVal=getRandInt(0,100);
+    setElemData("randTest",randVal);
+
+}
 
 function makeTableRow(itemData){
     var colWidth=100;
@@ -162,9 +178,122 @@ function loadStuff(){
     // localStorage.removeItem("save")
 }
 
+
+
+function myMove() {
+  var elem = document.getElementById("myAnimation");   
+  var pos = 0;
+  var id = setInterval(frame, 10);
+  function frame() {
+    if (pos == 350) {
+      clearInterval(id);
+    } else {
+      pos++; 
+      elem.style.top = pos + 'px'; 
+      elem.style.left = pos + 'px'; 
+    }
+  }
+}
+
+var fishData = {
+    state: 0,
+    intervalId: 0,
+    elemId: "fish",
+    speed: 1,
+    xPos: 0,
+    yPos: 0,
+    xDir: "right",
+    yDir: "down",
+};
+
+
+function startFish() {
+    
+    if(fishData.state == 0)
+    {
+	fishData.state = 1;
+	var elem = document.getElementById(fishData.elemId);   
+	fishData.intervalId = setInterval(frame, 10);
+	function frame() {
+	    var rx = 1*fishData.speed;
+	    var ry = 1*fishData.speed;
+
+	    
+	    
+	    if (fishData.yPos > 380) {
+	    	fishData.yDir = "up";
+	    	fishData.yPos = 379;
+	    }
+	    else if(fishData.yPos < 0) {
+	    	fishData.yDir = "down";
+	    	fishData.yPos = 1;
+	    }
+	    else {
+
+		if(getChance(50))
+		{
+		    if(fishData.yDir == "down") {
+			fishData.yDir = "up";
+		    }
+		    else {
+			fishData.yDir = "down";
+		    }
+		}
+		if(getChance(100))
+		{
+		    if(fishData.xDir == "left") {
+			fishData.xDir = "right";
+		    }
+		    else {
+			fishData.xDir = "left";
+		    }
+		}
+		    
+		
+	    	if(fishData.yDir == "down") {
+	    	    fishData.yPos += ry;
+	    	}
+	    	else {
+	    	    fishData.yPos -= ry;
+	    	}
+	    }
+	    elem.style.top = fishData.yPos + 'px'; 
+	    
+	    if (fishData.xPos > 350) {
+		fishData.xDir = "left";
+		fishData.xPos = 349;
+		// console.log("GO LEFT");
+	    }
+	    else if(fishData.xPos < 0) {
+		fishData.xDir = "right";
+		fishData.xPos = 1;
+		// console.log("GO RIGHT");
+	    }
+	    else {
+		if(fishData.xDir == "right") {
+		    fishData.xPos += rx;
+		    // console.log("Moving RIGHT");
+		}
+		else {
+		    fishData.xPos -= rx;
+		    // console.log("Moving LEFT");
+		}
+	    }
+	    elem.style.left = fishData.xPos + 'px'; 
+
+	}
+    }
+}
+
+function stopFish() {
+    fishData.state=0;
+    // var elem = document.getElementById("fish");   
+    clearInterval(fishData.intervalId);
+}
+
 window.setInterval(function(){
     // handClick(armData.num);
-    handClick(armData.num+10*footData.num);
+    handClick(armData.num+2*footData.num);
 
 }, 1000);
 

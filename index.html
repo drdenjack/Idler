@@ -6,21 +6,59 @@
   </head>
 
   <body>
-    <div id="topRow">
-      <div id="topRowRight">
-	<a href="#" onclick="loadStuff()">Load</a>
-	/
-	<a href="#" onclick="saveStuff()">Save</a>
-	/
-	<a href="#" onclick="importStuff()">Import</a>
-	/
-	<a href="#" onclick="exportStuff()">Export</a>
+    <div id="topRow" class="row">
+      <div id="topColLeft" class="column">
+	IdleHands - A perpetual work in progress.
+      </div>
+      <div id="topColRight" class="column">
+	<div id="menuBar">
+	  <a href="#" onclick="loadStuff()">Load</a>
+	  /
+	  <a href="#" onclick="saveStuff()">Save</a>
+	  /
+	  <a href="#" onclick="importStuff()">Import</a>
+	  /
+	  <a href="#" onclick="exportStuff()">Export</a>
+	</div>
       </div>
     </div>
-    <h1>IdleHands</h1>
-    <div id="itemTableDiv">
-    </div>
+    
+    <div id="midRow" class="row">
+      <div id="midColLeft" class="column">
+	<div id="itemTableDiv">
+	</div>
+      </div>
+      <div id="midColRight" class="column">
+	
+	<p>
+	  <button onclick="startFish()">Start</button>
+	  <button onclick="stopFish()">Stop</button>
+	  <!-- <button onclick="myMove()">Click Me</button> -->
+	  <!-- <button onclick="setRandTestVal()">Random</button> -->
+	  <!-- <span id="randTest">-1</span> -->
+	</p>
 
+	<div id ="fishTank">
+	  <div id ="fish">
+	     >|>
+	  </div>
+	</div>
+	  
+	<div id="fishTank2">
+	  <div id="fish2">
+	    <!-- <p> -->
+	      Small Fish: >|>
+	      <br>
+	      <br>
+	      Dead Fish: >++++|>
+	      <br>
+	      <br>
+	      Big Fish: >#########|>
+	    <!-- </p> -->
+	  </div>
+	</div>
+      </div>
+    </div>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
