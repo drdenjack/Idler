@@ -1,79 +1,103 @@
 
-var hands=111;
-var arms=1;
-var armCost=0;
-var feet=0;
-var footCost=0;
+var handData = {
+    idx: 0,
+    label: "Hands",
+    num: 1110,
+    id: "hands",
+    cost: null,
+    costId: this.id+"Cost",
+};
+
+var armData = {
+    idx: 1,
+    label: "Arms",
+    num: 0,
+    id: "arms",
+    cost: 0,
+};
+armData.costId=armData.id+"Cost";
+
+var footData = {
+    idx: 2,
+    label: "Feet",
+    num: 0,
+    id: "feet",
+    cost: 0,
+};
+footData.costId=footData.id+"Cost";
+
+function printItem(item){
+
+    console.log("item.idx: "+item.idx);
+    console.log("item.label: "+item.label);
+    console.log("item.num: "+item.numj);
+    console.log("item.id: "+item.id);
+    console.log("item.cost: "+item.cost);
+    console.log("item.costId: "+item.costId);
+}
 
 function setElemData(id,val){
     document.getElementById(id).innerHTML = val;
 }
 
-function calcArmCost(){
-    armCost = Math.floor(10 * Math.pow(1.1,arms));
-    setElemData("armCost",armCost);
-}
-
-function calcFootCost(){
-    footCost = Math.floor(100 * Math.pow(1.1,feet));
-    setElemData("footCost",footCost);
+function calcCost(item){
+    console.log(item.idx);
+    item.cost = Math.floor(Math.pow(10,item.idx) * Math.pow(1.1,item.num));
+    setElemData(item.costId,item.cost);
 }
 
 function handClick(num){
-    hands = hands + num;
-    setElemData("hands",hands);
+    handData.num = handData.num + num;
+    setElemData(handData.id,handData.num);
 }
 
-function buyArm(){
-    if(hands >= armCost){                                   //checks that the player can afford the cursor
-        arms = arms + 1;                                   //increases number of cursors
-    	hands = hands - armCost;                          //removes the cookies spent
-	setElemData("arms",arms);
-	setElemData("hands",hands);
-	calcArmCost();
+function buyItem(item){
+    printItem(item);
+    if(item.cost == null) {
+	item.num = item.num + 1;      
+	setElemData(handData.id,handData.num);
+    }
+    else if(handData.num >= item.cost){
+        item.num = item.num + 1;
+    	handData.num = handData.num - item.cost;
+	
+	setElemData(item.id,item.num);
+	setElemData(handData.id,handData.num);
+	calcCost(item);
     };
+
 };
 
-function buyFoot(){
-    if(hands >= footCost){                                   //checks that the player can afford the cursor
-        feet = feet + 1;                                   //increases number of cursors
-    	hands = hands - footCost;                          //removes the cookies spent
-	setElemData("feet",feet);
-	setElemData("hands",hands);
-	calcFootCost();
-    };
-};
-
-function makeTableRow(type,typeId,costId,costVal,clickFunc,clickArg){
+function makeTableRow(itemData){
     var colWidth=100;
     var tr = document.createElement("tr");
     var td = document.createElement("td");
-    var name = document.createTextNode(type+": ");
+    var name = document.createTextNode(itemData.label+": ");
     td.appendChild(name);
     td.width=colWidth;
     tr.appendChild(td);
     var span = document.createElement("span");
-    span.id=typeId;
-    span.innerHTML=type;
+    span.id=itemData.id;
+    span.innerHTML=itemData.id;
     td.appendChild(span);
     td.width=colWidth;
     tr.appendChild(td);
     var td = document.createElement("td");
-    if(costVal != null)
+    if(itemData.cost != null)
     {
     	var costText = document.createTextNode("Cost: ");
     	td.appendChild(costText);
     	var span = document.createElement("span");
-    	span.id=costId;
-    	span.innerHTML=costVal;
+    	span.id=itemData.costId;
+    	span.innerHTML=itemData.cost;
     	td.appendChild(span);
     }
     td.width=colWidth;
     tr.appendChild(td);
     var td = document.createElement("td");
     var button = document.createElement("Button");
-    button.innerHTML = "Buy "+type;
-    button.onclick = function(){clickFunc(clickArg)};
+    button.innerHTML = "Buy "+itemData.label;
+    button.onclick = function(){buyItem(itemData)};
     td.width=colWidth;
     td.appendChild(button);
     tr.appendChild(td);
@@ -90,11 +114,13 @@ function makeItemTable(){
     var table = document.createElement("TABLE");
     var tableBody = document.createElement("TBODY");
 
-    tr = makeTableRow("Hands","hands",null,null,handClick,1);
+    tr = makeTableRow(handData);
     tableBody.appendChild(tr);
-    tr = makeTableRow("Arms","arms","armCost",armCost,buyArm,1);
+    
+    tr = makeTableRow(armData);
     tableBody.appendChild(tr);
-    tr = makeTableRow("Feet","feet","footCost",footCost,buyFoot,1);
+
+    tr = makeTableRow(footData);
     tableBody.appendChild(tr);
 	
     table.appendChild(tableBody);
@@ -104,11 +130,11 @@ function makeItemTable(){
 
 function init(){
     makeItemTable();
-    setElemData("hands",hands);
-    setElemData("arms",arms);
-    setElemData("feet",feet);
-    calcArmCost();
-    calcFootCost();
+    setElemData(handData.id,handData.num);
+    setElemData(armData.id,armData.num);
+    setElemData(footData.id,footData.num);
+    calcCost(armData);
+    calcCost(footData);
 }
 
 function saveStuff(){
@@ -116,7 +142,7 @@ function saveStuff(){
     var save = {
 	hands: hands,
 	arms: arms,
-	feet: feet,
+	// feet: feet,
     }
 
     localStorage.setItem("save",JSON.stringify(save));
@@ -137,8 +163,9 @@ function loadStuff(){
 }
 
 window.setInterval(function(){
-    handClick(arms+10*feet);
-    
+    // handClick(armData.num);
+    handClick(armData.num+10*footData.num);
+
 }, 1000);
 
 // // autosave?
