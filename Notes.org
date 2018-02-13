@@ -1,0 +1,20 @@
+* Notes on the fish game
+
+* Ideas
+** Start by fishing with bare hook
+*** Catch minnows, bugs to use as bait
+*** Cut up fish for bait
+** Buy / Sell Fish
+** Fish grow and are worth more
+** Buy / Sell bait, worms, bugs
+
+* Types of fish
+** trout
+** goldfish
+** salmon
+** Bottom Feeders (flounder/halibut)
+** Top feeders?
+** quick vs slow
+** Crabs, etc?
+
+* Tell the story in the log (right hand column)
