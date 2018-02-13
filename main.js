@@ -1,36 +1,27 @@
 
-var handData = {
+var foodData = {
     idx: 0,
-    label: "Hands",
+    label: "Food",
     num: 10000,
-    id: "hands",
+    id: "food",
     cost: null,
 };
-handData.costId=handData.id+"Cost";
+foodData.costId=foodData.id+"Cost";
 
-var armData = {
+var bugData = {
     idx: 1,
-    label: "Arms",
+    label: "Bugs",
     num: 0,
-    id: "arms",
+    id: "bugs",
     cost: 0,
 };
-armData.costId=armData.id+"Cost";
-
-var footData = {
-    idx: 2,
-    label: "Feet",
-    num: 0,
-    id: "feet",
-    cost: 0,
-};
-footData.costId=footData.id+"Cost";
+bugData.costId=bugData.id+"Cost";
 
 function printItem(item){
 
     console.log("item.idx: "+item.idx);
     console.log("item.label: "+item.label);
-    console.log("item.num: "+item.numj);
+    console.log("item.num: "+item.num);
     console.log("item.id: "+item.id);
     console.log("item.cost: "+item.cost);
     console.log("item.costId: "+item.costId);
@@ -46,23 +37,23 @@ function calcCost(item){
     setElemData(item.costId,item.cost);
 }
 
-function handClick(num){
-    handData.num = handData.num + num;
-    setElemData(handData.id,handData.num);
+function foodClick(num){
+    foodData.num = foodData.num + num;
+    setElemData(foodData.id,foodData.num);
 }
 
 function buyItem(item){
     printItem(item);
     if(item.cost == null) {
 	item.num = item.num + 1;      
-	setElemData(handData.id,handData.num);
+	setElemData(foodData.id,foodData.num);
     }
-    else if(handData.num >= item.cost){
+    else if(foodData.num >= item.cost){
         item.num = item.num + 1;
-    	handData.num = handData.num - item.cost;
+    	foodData.num = foodData.num - item.cost;
 	
 	setElemData(item.id,item.num);
-	setElemData(handData.id,handData.num);
+	setElemData(foodData.id,foodData.num);
 	calcCost(item);
     };
 
@@ -120,43 +111,86 @@ function makeTableRow(itemData){
 }
 
 function makeItemTable(){
-
-    var colWidth=100;
-    
     var itemTableDiv = document.getElementById("itemTableDiv");
     itemTableDiv.innerHTML="";
     var table = document.createElement("TABLE");
+    table.setAttribute("id","itemTable");
     var tableBody = document.createElement("TBODY");
+    tableBody.setAttribute("id","itemTableBody");
 
-    tr = makeTableRow(handData);
+    tr = makeTableRow(foodData);
     tableBody.appendChild(tr);
     
-    tr = makeTableRow(armData);
+    tr = makeTableRow(bugData);
     tableBody.appendChild(tr);
 
-    tr = makeTableRow(footData);
-    tableBody.appendChild(tr);
-	
     table.appendChild(tableBody);
     itemTableDiv.appendChild(table);
     
 }
 
+function makeLogTable(){
+
+    var logTableDiv = document.getElementById("logTableDiv");
+    logTableDiv.innerHTML="";
+    var table = document.createElement("TABLE");
+    table.setAttribute("id","logTable");
+    var tableBody = document.createElement("TBODY");
+    tableBody.setAttribute("id","logTableBody");
+    
+    table.appendChild(tableBody);
+    logTableDiv.appendChild(table);
+}
+
+function getLogTime() {
+    var t = new Date();
+
+    var hh = t.getHours();
+    if(hh<10)
+	hh="0"+hh;
+    var mm = t.getMinutes();
+    if(mm<10)
+	mm="0"+mm;    
+    var ss = t.getSeconds();
+    if(ss<10)
+	ss="0"+ss;
+    
+    return hh+":"+mm+":"+ss;
+}
+
+function addLogItem(msg) {
+
+    var colWidth = 100;
+
+    var currTime = getLogTime();
+    var logMsg = currTime+": "+msg;
+    console.log(logMsg);
+
+    var logTable = document.getElementById("logTable");
+    var tr = logTable.insertRow(0);
+    
+    var td = document.createElement("td");
+    var msgNode = document.createTextNode(logMsg);
+    td.appendChild(msgNode);
+    td.width=colWidth;
+    tr.appendChild(td);
+
+}
+
+
 function init(){
     makeItemTable();
-    setElemData(handData.id,handData.num);
-    setElemData(armData.id,armData.num);
-    setElemData(footData.id,footData.num);
-    calcCost(armData);
-    calcCost(footData);
+    makeLogTable();
+    setElemData(foodData.id,foodData.num);
+    setElemData(bugData.id,bugData.num);
+    calcCost(bugData);
 }
 
 function saveStuff(){
     
     var save = {
-	hands: hands,
-	arms: arms,
-	// feet: feet,
+	foods: foods,
+	bugs: bugs,
     }
 
     localStorage.setItem("save",JSON.stringify(save));
@@ -164,12 +198,10 @@ function saveStuff(){
 
 function loadStuff(){
     var savegame = JSON.parse(localStorage.getItem("save"));
-    if (typeof savegame.hands !== "undefined")
-	hands = savegame.hands;
-    if (typeof savegame.arms !== "undefined")
-    	arms = savegame.arms;
-    if (typeof savegame.feet !== "undefined")
-    	feet = savegame.feet;
+    if (typeof savegame.foods !== "undefined")
+	foods = savegame.foods;
+    if (typeof savegame.bugs !== "undefined")
+    	bugs = savegame.bugs;
     init();
 
     // // if successful ...
@@ -187,7 +219,8 @@ function initFishTank() {
     midColCenter = document.getElementById("midColCenter");
     var mccPosData = midColCenter.getBoundingClientRect();
 
-    var newWidth = Math.floor(mccPosData.width);
+    // var newWidth = Math.floor(mccPosData.width);
+    var newWidth = mccPosData.width;
     if(newWidth < fishTankData.minW)
 	newWidth = fishTankData.minW;
     else if(newWidth > fishTankData.maxW)
@@ -244,6 +277,7 @@ function startFish() {
     
     if(fishData.state == 0)
     {
+	addLogItem("Starting Fish ...");
 	fishData.state = 1;
 	var elem = document.getElementById(fishData.elemId);   
 	fishData.intervalId = setInterval(frame, 10);
@@ -329,14 +363,15 @@ function startFish() {
 
 function stopFish() {
     fishData.state=0;
+    addLogItem("Stopping Fish ...");
+
     // var elem = document.getElementById("fish");   
     clearInterval(fishData.intervalId);
 }
 
 window.setInterval(function(){
-    // handClick(armData.num);
-    handClick(armData.num+2*footData.num);
-
+    foodClick(bugData.num);
+    
 }, 1000);
 
 // // autosave?
