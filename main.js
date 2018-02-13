@@ -74,14 +74,12 @@ function getRandInt(min,max){
 
 function getChance(val){
     // for a 1 in 20 chance, val==20
-    return (getRandInt(0,val) == 0);
-}
+    // val==0 returns 0
 
-function setRandTestVal(){
-
-    var randVal=getRandInt(0,100);
-    setElemData("randTest",randVal);
-
+    if(val == 0)
+	return 0;
+    else
+	return (getRandInt(0,val) == 0);
 }
 
 function makeTableRow(itemData){
@@ -178,22 +176,25 @@ function loadStuff(){
     // localStorage.removeItem("save")
 }
 
-
-
-function myMove() {
-  var elem = document.getElementById("myAnimation");   
-  var pos = 0;
-  var id = setInterval(frame, 10);
-  function frame() {
-    if (pos == 350) {
-      clearInterval(id);
-    } else {
-      pos++; 
-      elem.style.top = pos + 'px'; 
-      elem.style.left = pos + 'px'; 
-    }
-  }
+var fishTankData = {
+    height: 400,
+    width: 700,
 }
+
+function initFishTank() {
+    midColRight = document.getElementById("midColRight");
+    tankElem = document.getElementById("fishTank");
+    tankElem.style.height = fishTankData.height + "px";
+    if(midColRight.width<fishTankData.width) {
+	fishTankData.width=midColRight.width;
+    }
+    tankElem.style.width = fishTankData.width + "px";
+    
+    // tankElem.style.width = "100%";
+    // fishTankData.width=tankElem.width;
+    
+}
+initFishTank();
 
 var fishData = {
     state: 0,
@@ -204,8 +205,23 @@ var fishData = {
     yPos: 0,
     xDir: "right",
     yDir: "down",
+    height: 20,
+    width: 40,
+    color: "purple",
+    rightText: ">---|>",
+    leftText: "<|---<",
 };
 
+function fishInit() {
+    fishElem = document.getElementById("fish");
+    fishElem.style.height = fishData.height+"px";
+    fishElem.style.width = fishData.width+"px";
+    fishElem.style.background = fishData.color;
+    
+    fishText = document.getElementById("fishText");
+    fishText.innerHTML = fishData.rightText;
+}
+fishInit();
 
 function startFish() {
     
@@ -218,19 +234,23 @@ function startFish() {
 	    var rx = 1*fishData.speed;
 	    var ry = 1*fishData.speed;
 
+	    var ymax = fishTankData.height - fishData.height;
+	    var xmax = fishTankData.width - fishData.width;
+
+	    var xChangeChance = 100;
+	    var yChangeChance = 50;
 	    
-	    
-	    if (fishData.yPos > 380) {
+	    if (fishData.yPos > ymax) {
 	    	fishData.yDir = "up";
-	    	fishData.yPos = 379;
+	    	fishData.yPos = ymax;
 	    }
 	    else if(fishData.yPos < 0) {
 	    	fishData.yDir = "down";
-	    	fishData.yPos = 1;
+	    	fishData.yPos = 0;
 	    }
 	    else {
 
-		if(getChance(50))
+		if(getChance(yChangeChance))
 		{
 		    if(fishData.yDir == "down") {
 			fishData.yDir = "up";
@@ -239,7 +259,7 @@ function startFish() {
 			fishData.yDir = "down";
 		    }
 		}
-		if(getChance(100))
+		if(getChance(xChangeChance))
 		{
 		    if(fishData.xDir == "left") {
 			fishData.xDir = "right";
@@ -259,28 +279,31 @@ function startFish() {
 	    }
 	    elem.style.top = fishData.yPos + 'px'; 
 	    
-	    if (fishData.xPos > 350) {
+	    if (fishData.xPos > xmax) {
 		fishData.xDir = "left";
-		fishData.xPos = 349;
-		// console.log("GO LEFT");
+		fishData.xPos = xmax;
 	    }
 	    else if(fishData.xPos < 0) {
 		fishData.xDir = "right";
-		fishData.xPos = 1;
-		// console.log("GO RIGHT");
+		fishData.xPos = 0;
 	    }
 	    else {
 		if(fishData.xDir == "right") {
 		    fishData.xPos += rx;
-		    // console.log("Moving RIGHT");
 		}
 		else {
 		    fishData.xPos -= rx;
-		    // console.log("Moving LEFT");
 		}
 	    }
 	    elem.style.left = fishData.xPos + 'px'; 
 
+	    fishText = document.getElementById("fishText");
+	    if(fishData.xDir=="left") {
+		fishText.innerHTML = fishData.leftText;
+	    }
+	    else {
+		fishText.innerHTML = fishData.rightText;
+	    }
 	}
     }
 }
