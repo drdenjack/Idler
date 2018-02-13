@@ -46,17 +46,26 @@ body {
 
 #midColLeft {
     float: left;
-    width: 50%;
+    width: 20%;
     padding: 10px;
     background-color: green;
 }
 
-#midColRight {
+#midColCenter {
     float: left;
-    width: 50%;
+    width: 70%;
     margin: 0;
     /* padding: 10px; */
     background-color: red;
+
+}
+
+#midColRight {
+    float: left;
+    width: 10%;
+    margin: 0;
+    /* padding: 10px; */
+    background-color: yellow;
 
 }
 

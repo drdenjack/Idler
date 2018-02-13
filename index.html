@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>IdleHands</title>
+  <title>Fish in a Barrel</title>
   <link rel="stylesheet" type="text/css" href="interface.css">
   </head>
 
-  <body>
+  <body onresize="doResize()">
     <div id="topRow" class="row">
       <div id="topColLeft" class="column">
-	IdleHands - A perpetual work in progress.
+	Fish In a Barrel - A perpetual work in progress.
       </div>
       <div id="topColRight" class="column">
 	<div id="menuBar">
@@ -28,11 +28,12 @@
 	<div id="itemTableDiv">
 	</div>
       </div>
-      <div id="midColRight" class="column">
-	
+      <div id="midColCenter" class="column">
 	<p>
 	  <button onclick="startFish()">Start</button>
 	  <button onclick="stopFish()">Stop</button>
+	  Tank Size:
+	  <span id="tankSize"></span>
 	</p>
 
 	<div id ="fishTank">
@@ -55,7 +56,14 @@
 	  </div>
 	</div>
       </div>
+      <div id="midColRight" class="column">
+	<div id="itemTableDiv">
+	</div>
+      </div>
     </div>
+
+
+    
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

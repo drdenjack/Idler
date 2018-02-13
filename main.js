@@ -179,22 +179,39 @@ function loadStuff(){
 var fishTankData = {
     height: 400,
     width: 700,
+    maxW: 1200,
+    minW: 300,
 }
 
 function initFishTank() {
-    midColRight = document.getElementById("midColRight");
+    midColCenter = document.getElementById("midColCenter");
+    var mccPosData = midColCenter.getBoundingClientRect();
+
+    var newWidth = Math.floor(mccPosData.width);
+    if(newWidth < fishTankData.minW)
+	newWidth = fishTankData.minW;
+    else if(newWidth > fishTankData.maxW)
+	newWidth = fishTankData.maxW;
+
+    fishTankData.width=newWidth;
+    
     tankElem = document.getElementById("fishTank");
     tankElem.style.height = fishTankData.height + "px";
-    if(midColRight.width<fishTankData.width) {
-	fishTankData.width=midColRight.width;
-    }
-    tankElem.style.width = fishTankData.width + "px";
-    
-    // tankElem.style.width = "100%";
-    // fishTankData.width=tankElem.width;
+
+    tankElem.style.width = newWidth + "px";
     
 }
-initFishTank();
+
+function doResize() {
+
+    initFishTank();
+    
+    tankSize = document.getElementById("tankSize");
+    tankSize.innerHTML="( "+fishTankData.height+" x "+fishTankData.width+" )";
+
+}
+
+doResize();
 
 var fishData = {
     state: 0,
@@ -237,8 +254,10 @@ function startFish() {
 	    var ymax = fishTankData.height - fishData.height;
 	    var xmax = fishTankData.width - fishData.width;
 
-	    var xChangeChance = 100;
-	    var yChangeChance = 50;
+	    // var xChangeChance = 100;
+	    // var yChangeChance = 50;
+	    var xChangeChance = 0;
+	    var yChangeChance = 110;
 	    
 	    if (fishData.yPos > ymax) {
 	    	fishData.yDir = "up";
