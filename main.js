@@ -161,6 +161,7 @@ function getLogTime() {
 function addLogItem(msg) {
 
     var colWidth = 100;
+    var maxNumRows = 10;
 
     var currTime = getLogTime();
     var logMsg = currTime+": "+msg;
@@ -172,9 +173,17 @@ function addLogItem(msg) {
     var td = document.createElement("td");
     var msgNode = document.createTextNode(logMsg);
     td.appendChild(msgNode);
-    td.width=colWidth;
+    // td.width=colWidth;
     tr.appendChild(td);
 
+    var numRows = logTable.rows.length;
+    while(numRows>maxNumRows)
+    {
+	logTable.deleteRow(numRows-1);
+	numRows = logTable.rows.length;
+    }
+    
+    
 }
 
 
