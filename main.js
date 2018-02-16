@@ -183,7 +183,6 @@ function addLogItem(msg) {
 	numRows = logTable.rows.length;
     }
     
-    
 }
 
 
@@ -255,10 +254,21 @@ function doResize() {
 
 doResize();
 
+// fish that are active
+var liveFishList = [];
+
+// avaliable fish
+var fishTypeList = [];
+
+var fishColors = ["pink","purple","green","red","yellow","silver","white","orange","cyan","magenta","black"];
+
 var fishData = {
+    id: 111,
+    elemId: "aaa",
+    textId: "bbb",
+    type: "medium",
     state: 0,
     intervalId: 0,
-    elemId: "fish",
     speed: 1,
     xPos: 0,
     yPos: 0,
@@ -269,113 +279,177 @@ var fishData = {
     color: "purple",
     rightText: ">---|>",
     leftText: "<|---<",
+    xChangeChance: 250,
+    yChangeChance: 100,
+	    
 };
+fishTypeList.push(fishData);
+// this would be better off with constructor, etc.
+// make a new one with `fd = new fishData(...)`
 
-function fishInit() {
-    fishElem = document.getElementById("fish");
-    fishElem.style.height = fishData.height+"px";
-    fishElem.style.width = fishData.width+"px";
-    fishElem.style.background = fishData.color;
+
+function makeFishDiv(fd) {
+
+    fd.id = liveFishList.length;
+    fd.elemId = "fish"+fd.id;
+    fd.textId = fd.elemId+"Text";
     
-    fishText = document.getElementById("fishText");
+    var newDiv = document.createElement("div");
+    newDiv.setAttribute("id",fd.elemId);
+
+    var testId = newDiv.getAttribute("id");
+    
+    var span = document.createElement("span");
+    span.setAttribute("id",fd.textId);
+    newDiv.appendChild(span);
+    return newDiv;
+}
+
+function addFishToTank(fd) {
+
+    // plop it in at a random location?
+    
+    var fishTankElem = document.getElementById("fishTank");
+    var fishDiv = makeFishDiv(fd);
+
+    fishTankElem.appendChild(fishDiv);
+    fishDiv.className="fish";
+}
+
+function buyFish() {
+
+    // get type of fish to add:
+    var newFishId = liveFishList.length;
+
+    addLogItem("Adding fish #"+newFishId);
+    var newFishData = { ...fishTypeList[0] };
+
+    // random color
+    newFishData.color=fishColors[getRandInt(0,fishColors.length)];
+    
+    liveFishList.push(newFishData);
+    
+    addFishToTank(newFishData);
+    fishInit(newFishData);
+
+    numFish = document.getElementById("numFish");
+    numFish.innerHTML=liveFishList.length;
+
+    startOneFish(newFishData);
+    
+}
+
+function fishInit(fd) {
+
+    fishElem = document.getElementById(fd.elemId);
+    fishElem.style.height = fd.height+"px";
+    fishElem.style.width = fd.width+"px";
+    // fishElem.style.background = fd.color;
+    fishElem.style.color=fd.color;
+    
+    fishText = document.getElementById(fd.textId);
     fishText.innerHTML = fishData.rightText;
 }
-fishInit();
 
 function startFish() {
+
+    // foreach fishData, liveFishData
+
+    addLogItem("Starting fish ...");
     
-    if(fishData.state == 0)
+    liveFishList.forEach(function(fd) {
+	startOneFish(fd);
+    });
+
+}
+
+function startOneFish(fd) {
+    
+    if(fd.state == 0)
     {
-	addLogItem("Starting Fish ...");
-	fishData.state = 1;
-	var elem = document.getElementById(fishData.elemId);   
-	fishData.intervalId = setInterval(frame, 10);
+	fd.state = 1;
+	var elem = document.getElementById(fd.elemId);
+	fd.intervalId = setInterval(frame, 10);
 	function frame() {
-	    var rx = 1*fishData.speed;
-	    var ry = 1*fishData.speed;
+	    var rx = 1*fd.speed;
+	    var ry = 1*fd.speed;
 
-	    var ymax = fishTankData.height - fishData.height;
-	    var xmax = fishTankData.width - fishData.width;
+	    var ymax = fishTankData.height - fd.height;
+	    var xmax = fishTankData.width - fd.width;
 
-	    // var xChangeChance = 100;
-	    // var yChangeChance = 50;
-	    var xChangeChance = 0;
-	    var yChangeChance = 110;
-	    
-	    if (fishData.yPos > ymax) {
-	    	fishData.yDir = "up";
-	    	fishData.yPos = ymax;
+	    if (fd.yPos > ymax) {
+	    	fd.yDir = "up";
+	    	fd.yPos = ymax;
 	    }
-	    else if(fishData.yPos < 0) {
-	    	fishData.yDir = "down";
-	    	fishData.yPos = 0;
+	    else if(fd.yPos < 0) {
+	    	fd.yDir = "down";
+	    	fd.yPos = 0;
 	    }
 	    else {
 
-		if(getChance(yChangeChance))
+		if(getChance(fd.yChangeChance))
 		{
-		    if(fishData.yDir == "down") {
-			fishData.yDir = "up";
+		    if(fd.yDir == "down") {
+			fd.yDir = "up";
 		    }
 		    else {
-			fishData.yDir = "down";
+			fd.yDir = "down";
 		    }
 		}
-		if(getChance(xChangeChance))
+		if(getChance(fd.xChangeChance))
 		{
-		    if(fishData.xDir == "left") {
-			fishData.xDir = "right";
+		    if(fd.xDir == "left") {
+			fd.xDir = "right";
 		    }
 		    else {
-			fishData.xDir = "left";
+			fd.xDir = "left";
 		    }
 		}
 		    
-		
-	    	if(fishData.yDir == "down") {
-	    	    fishData.yPos += ry;
+	    	if(fd.yDir == "down") {
+	    	    fd.yPos += ry;
 	    	}
 	    	else {
-	    	    fishData.yPos -= ry;
+	    	    fd.yPos -= ry;
 	    	}
 	    }
-	    elem.style.top = fishData.yPos + 'px'; 
+	    elem.style.top = fd.yPos + 'px'; 
 	    
-	    if (fishData.xPos > xmax) {
-		fishData.xDir = "left";
-		fishData.xPos = xmax;
+	    if (fd.xPos > xmax) {
+		fd.xDir = "left";
+		fd.xPos = xmax;
 	    }
-	    else if(fishData.xPos < 0) {
-		fishData.xDir = "right";
-		fishData.xPos = 0;
+	    else if(fd.xPos < 0) {
+		fd.xDir = "right";
+		fd.xPos = 0;
 	    }
 	    else {
-		if(fishData.xDir == "right") {
-		    fishData.xPos += rx;
+		if(fd.xDir == "right") {
+		    fd.xPos += rx;
 		}
 		else {
-		    fishData.xPos -= rx;
+		    fd.xPos -= rx;
 		}
 	    }
-	    elem.style.left = fishData.xPos + 'px'; 
+	    elem.style.left = fd.xPos + 'px'; 
 
-	    fishText = document.getElementById("fishText");
-	    if(fishData.xDir=="left") {
-		fishText.innerHTML = fishData.leftText;
+	    fishText = document.getElementById(fd.textId);
+	    if(fd.xDir=="left") {
+		fishText.innerHTML = fd.leftText;
 	    }
 	    else {
-		fishText.innerHTML = fishData.rightText;
+		fishText.innerHTML = fd.rightText;
 	    }
 	}
     }
 }
 
 function stopFish() {
-    fishData.state=0;
     addLogItem("Stopping Fish ...");
-
-    // var elem = document.getElementById("fish");   
-    clearInterval(fishData.intervalId);
+    liveFishList.forEach(function(fd) {
+	fd.state=0;
+	clearInterval(fd.intervalId);
+    });
 }
 
 window.setInterval(function(){

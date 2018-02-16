@@ -84,7 +84,8 @@ body {
     position: relative;
     background: rgb(10,100,250);
 }
-#fish {
+
+.fish {
     position: absolute;
-    background: silver;
+    /* background: silver; */
 }
