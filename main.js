@@ -173,7 +173,6 @@ function addLogItem(msg) {
     var td = document.createElement("td");
     var msgNode = document.createTextNode(logMsg);
     td.appendChild(msgNode);
-    // td.width=colWidth;
     tr.appendChild(td);
 
     var numRows = logTable.rows.length;
@@ -227,7 +226,6 @@ function initFishTank() {
     midColCenter = document.getElementById("midColCenter");
     var mccPosData = midColCenter.getBoundingClientRect();
 
-    // var newWidth = Math.floor(mccPosData.width);
     var newWidth = mccPosData.width;
     if(newWidth < fishTankData.minW)
 	newWidth = fishTankData.minW;

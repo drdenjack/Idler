@@ -1,14 +1,38 @@
 * Notes on the fish game
 
 * Ideas
+** Fish come to "tank" if there is a lot of food
+  - find food and feed it to fish as clicking mechanism
+  - fish enter the "tank" through ths sides
+  - catch the fish in the tank!
+  - stock the tank by buying fish
+  - don't overfish the tank!!
+** Fish hatch from eggs
+- start with one egg
+** Buy different kinds of fish eggs
+** Fish can lay eggs
+- females only?
+** display time passed in window
+** Catch fish 
+   - use hooks
+   - upgrade hook types
+   - upgrade to nets
+   - upgrade to dynamite?   seems fishy ... hahaha!
+
 ** Start by fishing with bare hook
 *** Catch minnows, bugs to use as bait
 *** Cut up fish for bait
 ** Buy / Sell Fish
+ - which fish gets sold?
+ - sell by type?
+ - sell by value?
+   - do different fish have value?
+ - only sell fish that get caught?
 ** Fish grow and are worth more
 ** Buy / Sell bait, worms, bugs
 
 * Types of fish
+- unlock fish types as you grow
 ** trout
 ** goldfish
 ** salmon
@@ -16,5 +40,6 @@
 ** Top feeders?
 ** quick vs slow
 ** Crabs, etc?
+
 
 * Tell the story in the log (right hand column)
