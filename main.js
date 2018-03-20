@@ -2,7 +2,7 @@
 var foodData = {
     idx: 0,
     label: "Food",
-    num: 10000,
+    num: 0,
     id: "food",
     cost: null,
 };
@@ -279,6 +279,7 @@ var fishData = {
     leftText: "<|---<",
     xChangeChance: 250,
     yChangeChance: 100,
+    foodPerTick: 2,
 	    
 };
 fishTypeList.push(fishData);
@@ -450,8 +451,58 @@ function startOneFish(fd) {
 //     });
 // }
 
+function eatFood() {
+
+    // forEach fish in liveFishList
+    // eat food (bigger fish eat first)
+
+    // sort liveFishList by food rate
+    // liveFishList.sort(function(a,b){ return a.foodPerTick - b.foodPerTick };
+
+    if(liveFishList.length>0)
+    {
+	let i=0;
+	let deadFish = [];
+	let remainingFood=foodData.num;
+	while(i<liveFishList.length)
+	{
+	    currFish=liveFishList[i];
+
+	    if(remainingFood>=currFish.foodPerTick)
+		remainingFood-=currFish.foodPerTick;
+	    else
+	    {
+		deadFish.push(currFish);
+	    }
+	    
+	    i+=1;
+	}
+
+	killFish(deadFish);
+	foodData.num = remainingFood;
+    }
+}
+
+function killFish(deadFishList) {
+
+    for(i = 0; i < deadFishList.length; i++) {
+	fish = deadFishList[i];
+	let idx = liveFishList.indexOf(fish);
+	liveFishList.splice(idx,1);
+	removeElemById(fish.elemId);
+	window.clearInterval(fish.intervalId);
+	addLogItem("Fish #"+fish.id+" died");
+    }
+}
+
+function removeElemById(id) {
+
+    let elem = document.getElementById(id);
+    return elem.parentNode.removeChild(elem);
+}
 window.setInterval(function(){
     foodClick(bugData.num);
+    eatFood();
     
 }, 1000);
 
