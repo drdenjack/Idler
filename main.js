@@ -101,7 +101,7 @@ function makeTableRow(itemData){
     tr.appendChild(td);
     var td = document.createElement("td");
     var button = document.createElement("Button");
-    button.innerHTML = "Buy "+itemData.label;
+    button.innerHTML = "Forage "+itemData.label;
     button.onclick = function(){buyItem(itemData)};
     td.width=colWidth;
     td.appendChild(button);
@@ -349,17 +349,17 @@ function fishInit(fd) {
     fishText.innerHTML = fishData.rightText;
 }
 
-function startFish() {
+// function startFish() {
 
-    // foreach fishData, liveFishData
+//     // foreach fishData, liveFishData
 
-    addLogItem("Starting fish ...");
+//     addLogItem("Starting fish ...");
     
-    liveFishList.forEach(function(fd) {
-	startOneFish(fd);
-    });
+//     liveFishList.forEach(function(fd) {
+// 	startOneFish(fd);
+//     });
 
-}
+// }
 
 function startOneFish(fd) {
     
@@ -442,13 +442,13 @@ function startOneFish(fd) {
     }
 }
 
-function stopFish() {
-    addLogItem("Stopping Fish ...");
-    liveFishList.forEach(function(fd) {
-	fd.state=0;
-	clearInterval(fd.intervalId);
-    });
-}
+// function stopFish() {
+//     addLogItem("Stopping Fish ...");
+//     liveFishList.forEach(function(fd) {
+// 	fd.state=0;
+// 	clearInterval(fd.intervalId);
+//     });
+// }
 
 window.setInterval(function(){
     foodClick(bugData.num);

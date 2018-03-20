@@ -89,3 +89,7 @@ body {
     position: absolute;
     /* background: silver; */
 }
+
+#debug {
+    background-color: Orange;
+}
