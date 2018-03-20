@@ -11,12 +11,20 @@ foodData.costId=foodData.id+"Cost";
 var bugData = {
     idx: 1,
     label: "Bugs",
-    num: 0,
+    num: 20,
     id: "bugs",
     cost: 0,
 };
 bugData.costId=bugData.id+"Cost";
 
+var fishingLineData = {
+    id: "fishingLine",
+    xPos: 0,
+    yPos: 0,
+    length: 5,
+    minLength: 5,
+
+};
 
 
 function printItem(item){
@@ -240,6 +248,9 @@ function initFishTank() {
     tankElem.style.height = fishTankData.height + "px";
 
     tankElem.style.width = newWidth + "px";
+
+
+    addFishingLine();
     
 }
 
@@ -307,8 +318,6 @@ function makeFishDiv(fd) {
     var newDiv = document.createElement("div");
     newDiv.setAttribute("id",fd.elemId);
 
-    var testId = newDiv.getAttribute("id");
-    
     var span = document.createElement("span");
     span.setAttribute("id",fd.textId);
     newDiv.appendChild(span);
@@ -542,5 +551,173 @@ window.setInterval(function(){
 // window.setInterval(function(){
 //     save();
 // }, 10000);
+
+// console.log(fishingLineData);
+
+function addFishingLine() {
+    
+    var fishTankElem = document.getElementById("fishTank");
+
+    var lineDiv = document.createElement("div");
+    lineDiv.setAttribute("id",fishingLineData.id);
+    fishTankElem.appendChild(lineDiv);
+    lineDiv.className="fishingLine";
+
+    // lineDiv.style.height=fishingLineData.height;
+    // lineDiv.style.width=fishingLineData.width;
+    // lineDiv.style.color="Black";
+
+    let tw = fishTankElem.offsetWidth
+    let th = fishTankElem.offsetHeight;
+    // DO NOT USE fishTankElem.style.height or fishTankElem.style.width
+
+    
+    console.log("tw: "+tw);
+    console.log("th: "+th);
+    
+    // addLogItem("tw: "+tw);
+    // addLogItem("th: "+th);
+    
+    lineDiv.style.height = Math.floor(th/2.0) + "px";
+    lineDiv.style.width = "3px";
+    // lineDiv.style.background = "Black";
+    lineDiv.style.left = Math.floor(tw/2.0) + "px";
+    lineDiv.style.top = "0px";
+    // return lineDiv;
+}
+
+function moveFishingLine(dir) {
+
+    let lineElem = document.getElementById(fishingLineData.id);
+    let fishTankElem = document.getElementById("fishTank");
+    let tw = fishTankElem.offsetWidth
+    let th = fishTankElem.offsetHeight;
+
+    let lh = lineElem.offsetHeight;
+    let lw = lineElem.offsetWidth;
+    
+    let ll = lineElem.offsetLeft;
+    let lr = lineElem.offsetRight;
+
+    let minh = fishingLineData.minLength;
+    
+    let dx = 10;
+    
+    if(dir=="up")
+    {
+	if(lh > minh)
+	    lh -= dx;
+	if(lh < minh)
+	    lh = minh;
+    }
+    if(dir=="down")
+    {
+	if(lh < th - minh)
+	    lh += dx;
+	if(lh > th - minh)
+	    lh = th - minh;
+    }
+    if(dir=="left")
+    {
+	if(ll > 0)
+	    ll -= dx;
+	if(ll < 0)
+	    ll = 0;
+    }
+    if(dir=="right")
+    {
+	if(ll < tw - lw)
+	    ll += dx;
+	if(ll > tw - lw)
+	    ll = tw - lw;
+    }
+
+    lineElem.style.height=lh+"px";
+    lineElem.style.left=ll+"px";
+    
+}
+
+
+
+// keypresses
+window.addEventListener("keydown", function (event) {
+  if (event.defaultPrevented) {
+    return; // Should do nothing if the default action has been cancelled
+  }
+
+    // w: 87
+    // s: 83
+    // a: 65
+    // d: 68
+    // space: 32
+    // e: 69
+    // q: 81
+    // leftArrow:  37
+    // upArrow:    38
+    // rightArrow: 39
+    // downArrow:  40
+    
+  var handled = false;
+  if (event.keyCode !== undefined) {
+      // Handle the event with KeyboardEvent.keyCode and set handled true.
+
+      if(event.keyCode == 87 || event.keyCode == 38)
+      {
+	  // up
+	  // addLogItem("MOVING UP");
+	  moveFishingLine("up");
+	  handled=true;
+      }
+      if(event.keyCode == 83 || event.keyCode == 40)
+      {
+	  // down
+	  // addLogItem("MOVING DOWN");
+	  moveFishingLine("down");
+	  handled=true;
+      }
+      if(event.keyCode == 65 || event.keyCode == 37)
+      {
+	  // left
+	  // addLogItem("MOVING LEFT");
+	  moveFishingLine("left");
+	  handled=true;
+      }
+      if(event.keyCode == 68 || event.keyCode == 39)
+      {
+	  // right
+	  // addLogItem("MOVING RIGHT");
+	  moveFishingLine("right");
+	  handled=true;
+      }
+      if(event.keyCode == 32)
+      {
+	  // space 
+	  // addLogItem("SPACE");
+	  handled=true;
+      }
+      if(event.keyCode == 69)
+      {
+	  // 'e'
+	  // addLogItem("e - options?");
+	  handled=true;
+      }
+      if(event.keyCode == 81)
+      {
+	  // 'q'
+	  // addLogItem("q - quit");
+	  handled=true;
+      }
+      
+  } // else if (event.keyIdentifier !== undefined) {
+  //   // Handle the event with KeyboardEvent.keyIdentifier and set handled true.
+  // } else if (event.key !== undefined) {
+  //   // Handle the event with KeyboardEvent.key and set handled true.
+  // }
+
+  if (handled) {
+    // Suppress "double action" if event handled
+    event.preventDefault();
+  }
+}, true);
 
 init();

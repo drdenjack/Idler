@@ -90,6 +90,11 @@ body {
     /* background: silver; */
 }
 
+.fishingLine {
+    position: absolute;
+    background: black;
+}
+
 #debug {
     background-color: Orange;
 }
