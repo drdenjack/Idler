@@ -502,15 +502,29 @@ function killFish(deadFishList) {
 
     for(i = 0; i < deadFishList.length; i++) {
 	fish = deadFishList[i];
-	let idx = liveFishList.indexOf(fish);
-	liveFishList.splice(idx,1);
-	removeElemById(fish.elemId);
-	window.clearInterval(fish.intervalId);
+	removeFish(fish);
 	addLogItem("Fish #"+fish.id+" died");
-	numFish = document.getElementById("numFish");
-	numFish.innerHTML=liveFishList.length;
 
     }
+}
+
+function sellFish() {
+
+    let idx = getRandInt(0,liveFishList.length);
+    fish = liveFishList[idx];
+    removeFish(fish);
+    addLogItem("Fish #"+fish.id+" sold");
+
+}
+
+function removeFish(fish) {
+    
+    let idx = liveFishList.indexOf(fish);
+    liveFishList.splice(idx,1);
+    removeElemById(fish.elemId);
+    window.clearInterval(fish.intervalId);
+    numFish = document.getElementById("numFish");
+    numFish.innerHTML=liveFishList.length;
 }
 
 function removeElemById(id) {
