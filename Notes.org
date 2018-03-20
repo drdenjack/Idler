@@ -7,11 +7,7 @@
   - catch the fish in the tank!
   - stock the tank by buying fish
   - don't overfish the tank!!
-** Fish hatch from eggs
-- start with one egg
 ** Buy different kinds of fish eggs
-** Fish can lay eggs
-- females only?
 ** display time passed in window
 ** Catch fish 
    - use hooks
@@ -30,6 +26,12 @@
  - only sell fish that get caught?
 ** Fish grow and are worth more
 ** Buy / Sell bait, worms, bugs
+
+* How to fish
+use arrow keys or `wsad`
+space hooks fish
+hold space to real in
+
 
 * Types of fish
 - unlock fish types as you grow
