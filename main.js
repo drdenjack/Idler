@@ -17,6 +17,8 @@ var bugData = {
 };
 bugData.costId=bugData.id+"Cost";
 
+
+
 function printItem(item){
 
     console.log("item.idx: "+item.idx);
@@ -286,10 +288,19 @@ fishTypeList.push(fishData);
 // this would be better off with constructor, etc.
 // make a new one with `fd = new fishData(...)`
 
+var nextFishId=1
+
+function setFishId(fish) {
+    fish.id = nextFishId;
+    nextFishId++;
+}
 
 function makeFishDiv(fd) {
 
-    fd.id = liveFishList.length;
+    // fd.id = liveFishList.length;
+    setFishId(fd);
+    addLogItem("Adding fish #"+fd.id);
+
     fd.elemId = "fish"+fd.id;
     fd.textId = fd.elemId+"Text";
     
@@ -318,9 +329,6 @@ function addFishToTank(fd) {
 function buyFish() {
 
     // get type of fish to add:
-    var newFishId = liveFishList.length;
-
-    addLogItem("Adding fish #"+newFishId);
     var newFishData = { ...fishTypeList[0] };
 
     // random color
@@ -457,8 +465,14 @@ function eatFood() {
     // eat food (bigger fish eat first)
 
     // sort liveFishList by food rate
-    // liveFishList.sort(function(a,b){ return a.foodPerTick - b.foodPerTick };
+    // liveFishList.sort(function(a,b){ return a.foodPerTick - b.foodPerTick });
+    //liveFishList.sort(function(a,b){ return a.id - b.id });
 
+    
+    liveFishList.sort(function(a,b){ return 0.5 - Math.random()});
+    console.log(liveFishList);
+
+    
     if(liveFishList.length>0)
     {
 	let i=0;
@@ -480,6 +494,7 @@ function eatFood() {
 
 	killFish(deadFish);
 	foodData.num = remainingFood;
+	setElemData(foodData.id,foodData.num);
     }
 }
 
@@ -492,6 +507,9 @@ function killFish(deadFishList) {
 	removeElemById(fish.elemId);
 	window.clearInterval(fish.intervalId);
 	addLogItem("Fish #"+fish.id+" died");
+	numFish = document.getElementById("numFish");
+	numFish.innerHTML=liveFishList.length;
+
     }
 }
 
