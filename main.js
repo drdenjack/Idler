@@ -233,6 +233,9 @@ var fishTankData = {
 }
 
 function initFishTank() {
+
+    clearFishingLine();
+    
     midColCenter = document.getElementById("midColCenter");
     var mccPosData = midColCenter.getBoundingClientRect();
 
@@ -261,6 +264,8 @@ function doResize() {
     tankSize = document.getElementById("tankSize");
     tankSize.innerHTML="( "+fishTankData.height+" x "+fishTankData.width+" )";
 
+    
+    
 }
 
 doResize();
@@ -539,7 +544,8 @@ function removeFish(fish) {
 function removeElemById(id) {
 
     let elem = document.getElementById(id);
-    return elem.parentNode.removeChild(elem);
+    if(elem)
+	return elem.parentNode.removeChild(elem);
 }
 window.setInterval(function(){
     foodClick(bugData.num);
@@ -553,6 +559,10 @@ window.setInterval(function(){
 // }, 10000);
 
 // console.log(fishingLineData);
+
+function clearFishingLine() {
+    removeElemById(fishingLineData.id);
+}
 
 function addFishingLine() {
     
