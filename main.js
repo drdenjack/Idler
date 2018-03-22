@@ -313,7 +313,6 @@ function setFishId(fish) {
 
 function makeFishDiv(fd) {
 
-    // fd.id = liveFishList.length;
     setFishId(fd);
     addLogItem("Adding fish #"+fd.id);
 
@@ -475,17 +474,8 @@ function startOneFish(fd) {
 
 function eatFood() {
 
-    // forEach fish in liveFishList
-    // eat food (bigger fish eat first)
-
-    // sort liveFishList by food rate
-    // liveFishList.sort(function(a,b){ return a.foodPerTick - b.foodPerTick });
-    //liveFishList.sort(function(a,b){ return a.id - b.id });
-
-    
+    // random fish eat first
     liveFishList.sort(function(a,b){ return 0.5 - Math.random()});
-    console.log(liveFishList);
-
     
     if(liveFishList.length>0)
     {
@@ -573,27 +563,15 @@ function addFishingLine() {
     fishTankElem.appendChild(lineDiv);
     lineDiv.className="fishingLine";
 
-    // lineDiv.style.height=fishingLineData.height;
-    // lineDiv.style.width=fishingLineData.width;
-    // lineDiv.style.color="Black";
-
     let tw = fishTankElem.offsetWidth
     let th = fishTankElem.offsetHeight;
     // DO NOT USE fishTankElem.style.height or fishTankElem.style.width
-
-    
-    console.log("tw: "+tw);
-    console.log("th: "+th);
-    
-    // addLogItem("tw: "+tw);
-    // addLogItem("th: "+th);
     
     lineDiv.style.height = Math.floor(th/2.0) + "px";
     lineDiv.style.width = "3px";
-    // lineDiv.style.background = "Black";
     lineDiv.style.left = Math.floor(tw/2.0) + "px";
     lineDiv.style.top = "0px";
-    // return lineDiv;
+
 }
 
 function moveFishingLine(dir) {
